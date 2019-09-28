@@ -12,3 +12,5 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker front images
       run: docker-compose build
+      - name: Up the Docker front images
+      run: docker-compose up
