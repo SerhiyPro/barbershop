@@ -1,0 +1,30 @@
+version: '3'
+services:
+    front:
+      image: barbershop/front
+      build:
+        context: ./
+        dockerfile: front.dockerfile
+      volumes:
+        - ./client:/app
+      command: sh -c "npm i && npm run dev"
+      ports:
+        - "8080:8080"
+    web:
+      image: barbershop/web
+      build:
+        context: ./
+        dockerfile: web.dockerfile
+      ports:
+        - "5000:5000"
+      volumes:
+        - ./:/app
+      depends_on:
+        - db
+    db:
+      image: postgres:10.2-alpine
+      environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+      ports:
+          - "5432:5432"
