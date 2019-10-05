@@ -37,12 +37,3 @@ class User(db.Model):
             }
 
         return {'users': list(map(lambda x: to_json(x), cls.query.all()))}
-
-    @classmethod
-    def delete_all(cls):
-        try:
-            db.session.query(cls).delete()
-            db.session.commit()
-            return {}, 204
-        except:
-            return {'message': 'Something went wrong'}, 500

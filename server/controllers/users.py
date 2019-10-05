@@ -98,10 +98,6 @@ class AllUsers(Resource):
     def get(self):
         return User.return_all(), 200
 
-    @jwt_required
-    def delete(self):
-        return User.delete_all()
-
 
 class SecretResource(Resource):
     """To access only with token"""
