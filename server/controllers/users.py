@@ -1,6 +1,6 @@
 from server import api, jwt
 from flask_restful import Resource, reqparse
-from server.models import User
+from server.models import Users
 from server.models import RevokedTokenModel
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, \
     jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
@@ -20,12 +20,12 @@ class UserRegistration(Resource):
     def post(self):
         data = parser.parse_args()
 
-        if User.get_by_username(data['username']):
+        if Users.get_by_username(data['username']):
             return {'message': f'User {data["username"]} already exists'}, 400
 
-        new_user = User(
+        new_user = Users(
             username=data['username'],
-            password_hash=User.generate_hash(data['password'])
+            password_hash=Users.generate_hash(data['password'])
         )
         try:
             new_user.save_to_db()
@@ -44,11 +44,11 @@ class UserLogin(Resource):
     def post(self):
         data = parser.parse_args()
 
-        current_user = User.get_by_username(data['username'])
+        current_user = Users.get_by_username(data['username'])
         if not current_user:
             return {'message': f'User {data["username"]} doesn\'t exist'}, 400
 
-        if User.verify_hash(data['password'], current_user.password_hash):
+        if Users.verify_hash(data['password'], current_user.password_hash):
             access_token = create_access_token(identity=data['username'])
             refresh_token = create_refresh_token(identity=data['username'])
             return {
@@ -96,7 +96,7 @@ class AllUsers(Resource):
     """Only for testing"""
     @jwt_required
     def get(self):
-        return User.return_all(), 200
+        return Users.return_all(), 200
 
 
 class SecretResource(Resource):
