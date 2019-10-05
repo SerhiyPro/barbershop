@@ -112,10 +112,10 @@ class SecretResource(Resource):
         }
 
 
-api.add_resource(UserRegistration, '/registration')
-api.add_resource(UserLogin, '/login')
-api.add_resource(UserLogoutAccess, '/logout/access')
-api.add_resource(UserLogoutRefresh, '/logout/refresh')
-api.add_resource(TokenRefresh, '/token/refresh')
-api.add_resource(AllUsers, '/users')
-api.add_resource(SecretResource, '/secret')
+api.add_resource(UserRegistration, '/api/registration')
+api.add_resource(UserLogin, '/api/login')
+api.add_resource(UserLogoutAccess, '/api/logout/access')
+api.add_resource(UserLogoutRefresh, '/api/logout/refresh')
+api.add_resource(TokenRefresh, '/api/token/refresh')
+api.add_resource(AllUsers, '/api/users')
+api.add_resource(SecretResource, '/api/secret')
