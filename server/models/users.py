@@ -1,13 +1,19 @@
 from server import db
 from passlib.hash import pbkdf2_sha256 as sha256
+from server.models.services import services_helper
 
 
-class User(db.Model):
+class Users(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    services = db.relationship('Services', secondary=services_helper, lazy='subquery',
+                               backref=db.backref('services', lazy=True))
+    photo = db.Column(db.String(128))
+    full_name = db.Column(db.String(128))
+    is_admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -33,16 +39,8 @@ class User(db.Model):
         def to_json(x):
             return {
                 'username': x.username,
-                'password': x.password_hash
+                'password': x.password_hash,
+                'services': str(x.services)
             }
 
         return {'users': list(map(lambda x: to_json(x), cls.query.all()))}
-
-    @classmethod
-    def delete_all(cls):
-        try:
-            db.session.query(cls).delete()
-            db.session.commit()
-            return {}, 204
-        except:
-            return {'message': 'Something went wrong'}, 500
