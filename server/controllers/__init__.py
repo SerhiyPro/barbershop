@@ -1,2 +1,2 @@
-from server.controllers import testing_route
 from server.controllers import users
+from server.controllers import services
