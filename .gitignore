@@ -171,3 +171,4 @@ venv.bak/
 *.iml
 out
 gen
+server/static/img/users/*
