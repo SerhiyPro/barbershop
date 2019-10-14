@@ -1,11 +1,9 @@
 import werkzeug
 import uuid
 import os
-
 from flask import send_file
-
-from server import api, jwt
 from flask_restful import Resource, reqparse
+from server import api, jwt
 from server.models import Users, Services
 from server.models import RevokedTokenModel
 from server.config import UPLOAD_FOLDER as UF
