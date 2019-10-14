@@ -33,7 +33,7 @@ class UserRegistration(Resource):
                             help='This field cannot be blank', required=True)
         data = parser.parse_args()
 
-        if Users.get_by_username(data['username']):
+        if Users.get_by_username_or_id(username=data['username']):
             return {'message': f'User {data["username"]} already exists'}, 400
 
         photo = data['file']
@@ -72,13 +72,9 @@ class UserRegistration(Resource):
         refresh_token = create_refresh_token(identity=data['username'])  # to reissue access token after expiration
         return {
            'message': f'User {new_user.username} was successfully created',
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'services': str(new_user.services),
-            'profile_photo': new_user.photo,
-            'full_name': new_user.full_name,
-            'is_admin': new_user.is_admin,
-            'active': new_user.active
+           'user': new_user.get_self_representation(),
+           'access_token': access_token,
+           'refresh_token': refresh_token
         }, 201
 
 
@@ -141,17 +137,7 @@ class TokenRefresh(Resource):
 
 class AllUsers(Resource):
     def get(self):
-        def to_json(x):
-            return {
-                'username': x.username,
-                'password': x.password_hash,
-                'services': str(x.services),
-                'profile_photo': x.photo,
-                'full_name': x.full_name,
-                'is_admin': x.is_admin,
-                'active': x.active
-            }
-        return {'users': list(map(lambda x: to_json(x), Users.return_all()))}, 200
+        return {'users': list(map(lambda x: x.get_self_representation(), Users.return_all()))}, 200
 
 
 class User(Resource):
@@ -159,15 +145,7 @@ class User(Resource):
         current_user = Users.get_by_username_or_id(id=id)
         if not current_user:
             return {'message': f'User with id {id} doesn\'t exist'}, 400
-        return {
-                'username': current_user.username,
-                'password': current_user.password_hash,
-                'services': str(current_user.services),
-                'profile_photo': current_user.photo,
-                'full_name': current_user.full_name,
-                'is_admin': current_user.is_admin,
-                'active': current_user.active
-        }, 200
+        return {'user': current_user.get_self_representation()}, 200
 
     @jwt_required
     def put(self, id):
@@ -217,15 +195,9 @@ class User(Resource):
         access_token = create_access_token(identity=data['username'])
         refresh_token = create_refresh_token(identity=data['username'])
         return {
-            'username': current_user.username,
+            'user': current_user.get_self_representation(),
             'access_token': access_token,
-            'refresh_token': refresh_token,
-            'password': current_user.password_hash,
-            'services': str(current_user.services),
-            'profile_photo': current_user.photo,
-            'full_name': current_user.full_name,
-            'is_admin': current_user.is_admin,
-            'active': current_user.active
+            'refresh_token': refresh_token
         }, 201
 
     @jwt_required

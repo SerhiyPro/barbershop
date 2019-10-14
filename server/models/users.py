@@ -23,6 +23,17 @@ class Users(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def get_self_representation(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'services': str(self.services),
+            'profile_photo': self.photo,
+            'full_name': self.full_name,
+            'is_admin': self.is_admin,
+            'active': self.active
+        }
+
     def add_service(self, service):
         self.services.append(service)
         db.session.commit()
