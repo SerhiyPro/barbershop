@@ -172,3 +172,4 @@ venv.bak/
 out
 gen
 server/static/img/users/*
+server/static/img/work_spheres/*
