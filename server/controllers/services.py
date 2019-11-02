@@ -9,7 +9,7 @@ parser.add_argument('name', help='This field cannot be blank', required=True)
 
 class ServicesAll(Resource):
     def get(self):
-        return Services.return_all(), 200
+        return Services.get_all(), 200
 
     @jwt_required
     def post(self):

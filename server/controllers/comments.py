@@ -9,7 +9,7 @@ parser = reqparse.RequestParser()  # Adding request parses
 
 class CommentsAll(Resource):
     def get(self):
-        return {'comments': list(map(lambda x: x.get_self_representation(), Comments.return_all()))}, 200
+        return {'comments': list(map(lambda x: x.get_self_representation(), Comments.get_all()))}, 200
 
     def post(self):
         parser.add_argument('commentators_name', help='This field cannot be blank', required=True)

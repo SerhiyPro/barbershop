@@ -14,7 +14,7 @@ UPLOAD_FOLDER = os.path.join(UF, 'work_spheres')
 
 class WorkSpheresAll(Resource):
     def get(self):
-        return {'work_spheres': list(map(lambda x: x.get_self_representation(), WorkSpheres.return_all()))}, 200
+        return {'work_spheres': list(map(lambda x: x.get_self_representation(), WorkSpheres.get_all()))}, 200
 
     @jwt_required
     def post(self):

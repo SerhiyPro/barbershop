@@ -135,7 +135,7 @@ class TokenRefresh(Resource):
 
 class AllUsers(Resource):
     def get(self):
-        return {'users': list(map(lambda x: x.get_self_representation(), Users.return_all()))}, 200
+        return {'users': list(map(lambda x: x.get_self_representation(), Users.get_all()))}, 200
 
 
 class User(Resource):
