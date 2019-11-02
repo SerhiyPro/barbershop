@@ -10,7 +10,6 @@ from server.config import UPLOAD_FOLDER as UF
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, \
     jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
 
-parser = reqparse.RequestParser()  # Adding request parses
 UPLOAD_FOLDER = os.path.join(UF, 'users')
 
 
@@ -22,14 +21,8 @@ def check_if_token_in_blacklist(decrypted_token):
 
 class UserRegistration(Resource):
     def post(self):
-        parser.add_argument('username', help='This field cannot be blank', required=True)
-        parser.add_argument('password', help='This field cannot be blank', required=True)
-        parser.add_argument('full_name', help='This field cannot be blank', required=True)
-        parser.add_argument('is_admin', required=False)
-        parser.add_argument('services', required=False)
-        parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files',
-                            help='This field cannot be blank', required=True)
-        data = parser.parse_args()
+
+        data = get_parser_data(check=True)
 
         if Users.get_by_username_or_id(username=data['username']):
             return {'message': f'User {data["username"]} already exists'}, 400
@@ -78,9 +71,7 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        parser.add_argument('username', help='This field cannot be blank', required=True)
-        parser.add_argument('password', help='This field cannot be blank', required=True)
-        data = parser.parse_args()
+        data = get_login_parser_data()
 
         current_user = Users.get_by_username_or_id(username=data['username'])
         if not current_user:
@@ -135,7 +126,7 @@ class TokenRefresh(Resource):
 
 class AllUsers(Resource):
     def get(self):
-        return {'users': list(map(lambda x: x.get_self_representation(), Users.return_all()))}, 200
+        return {'users': list(map(lambda x: x.get_self_representation(), Users.get_all()))}, 200
 
 
 class User(Resource):
@@ -147,13 +138,7 @@ class User(Resource):
 
     @jwt_required
     def put(self, id):
-        parser.add_argument('username', required=False)
-        parser.add_argument('password', required=False)
-        parser.add_argument('full_name', required=False)
-        parser.add_argument('is_admin', required=False)
-        parser.add_argument('services', required=False)
-        parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files', required=False)
-        data = parser.parse_args()
+        data = get_parser_data()
 
         current_user = Users.get_by_username_or_id(id=id)
         if not current_user:
@@ -210,6 +195,25 @@ class User(Resource):
 class UserProfilePhoto(Resource):
     def get(self, image_name):
         return send_file(os.path.join(os.getcwd(), UPLOAD_FOLDER, image_name))
+
+
+def get_parser_data(check=False):
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', help='This field cannot be blank', required=check)
+    parser.add_argument('password', help='This field cannot be blank', required=check)
+    parser.add_argument('full_name', help='This field cannot be blank', required=check)
+    parser.add_argument('is_admin', required=False)
+    parser.add_argument('services', required=False)
+    parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files',
+                        help='This field cannot be blank', required=check)
+    return parser.parse_args()
+
+
+def get_login_parser_data():
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', help='This field cannot be blank', required=True)
+    parser.add_argument('password', help='This field cannot be blank', required=True)
+    return parser.parse_args()
 
 
 api.add_resource(UserRegistration, '/api/registration', methods=['POST'])

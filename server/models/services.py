@@ -33,7 +33,7 @@ class Services(db.Model):
         db.session.commit()
 
     @classmethod
-    def return_all(cls):
+    def get_all(cls):
         return {'services': list(map(lambda x: {'id': x.id, 'name': x.name, 'users': [u.id for u in x.services]},
                                      cls.query.all()))}
 

@@ -38,5 +38,5 @@ class WorkSpheres(db.Model):
             return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def return_all(cls):
+    def get_all(cls):
         return cls.query.all()

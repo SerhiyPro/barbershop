@@ -8,21 +8,16 @@ from server import api
 from server.models import WorkSpheres
 from server.config import UPLOAD_FOLDER as UF
 
-parser = reqparse.RequestParser()  # Adding request parses
 UPLOAD_FOLDER = os.path.join(UF, 'work_spheres')
 
 
 class WorkSpheresAll(Resource):
     def get(self):
-        return {'work_spheres': list(map(lambda x: x.get_self_representation(), WorkSpheres.return_all()))}, 200
+        return {'work_spheres': list(map(lambda x: x.get_self_representation(), WorkSpheres.get_all()))}, 200
 
     @jwt_required
     def post(self):
-        parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files',
-                            help='This field cannot be blank', required=True)
-        parser.add_argument('name', help='This field cannot be blank', required=True)
-        data = parser.parse_args()
-
+        data = get_parser_data(check=True)
         if WorkSpheres.get_by_name_or_id(name=data['name']):
             return {'message': f'Work sphere {data["name"]} already exists'}, 400
 
@@ -54,9 +49,7 @@ class WorkSphere(Resource):
 
     @jwt_required
     def put(self, id):
-        parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files', required=False)
-        parser.add_argument('name', required=False)
-        data = parser.parse_args()
+        data = get_parser_data()
 
         work_sphere = WorkSpheres.get_by_name_or_id(id=id)
         if not work_sphere:
@@ -95,6 +88,14 @@ class WorkSphere(Resource):
 class WorkSpherePhoto(Resource):
     def get(self, image_name):
         return send_file(os.path.join(os.getcwd(), UPLOAD_FOLDER, image_name))
+
+
+def get_parser_data(check=False):
+    parser = reqparse.RequestParser()
+    parser.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files',
+                        help='This field cannot be blank', required=check)
+    parser.add_argument('name', help='This field cannot be blank', required=check)
+    return parser.parse_args()
 
 
 api.add_resource(WorkSpheresAll, '/api/work_spheres', methods=['GET', 'POST'])
