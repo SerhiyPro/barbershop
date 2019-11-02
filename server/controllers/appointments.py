@@ -5,15 +5,12 @@ from server import api
 from server.models import Appointments, Services, Users
 
 
-parser = reqparse.RequestParser()  # Adding request parses
-
-
 class AppointmentsAll(Resource):
     def get(self):
         return {'appointments': list(map(lambda x: x.get_self_representation(), Appointments.get_all()))}, 200
 
     def post(self):
-        data = get_parser_info()
+        data = get_parser_info(required=True)
         try:
             procedure_start_datetime = datetime.strptime(data['procedure_start_datetime'], '%Y-%m-%d %H:%M')
             procedure_end_datetime = datetime.strptime(data['procedure_end_datetime'], '%Y-%m-%d %H:%M')
@@ -101,18 +98,16 @@ def get_datetime_range(start=None, end=None):
     return minutes
 
 
-def get_parser_info():
-    parser.add_argument('clients_name', help='This field cannot be blank', required=True)
-    parser.add_argument('clients_phone_number', help='This field cannot be blank', required=True)
-    parser.add_argument('service', type=int, help='This field cannot be blank and should be integer', required=True)
-    parser.add_argument('barber', type=int, help='This field cannot be blank and should be integer', required=True)
-    parser.add_argument('procedure_start_datetime', help='This field cannot be blank', required=True)
-    parser.add_argument('procedure_end_datetime', help='This field cannot be blank', required=True)
+def get_parser_info(required=False):
+    parser = reqparse.RequestParser()  # Adding request parses
+    parser.add_argument('clients_name', help='This field cannot be blank', required=required)
+    parser.add_argument('clients_phone_number', help='This field cannot be blank', required=required)
+    parser.add_argument('service', type=int, help='This field cannot be blank and should be integer', required=required)
+    parser.add_argument('barber', type=int, help='This field cannot be blank and should be integer', required=required)
+    parser.add_argument('procedure_start_datetime', help='This field cannot be blank', required=required)
+    parser.add_argument('procedure_end_datetime', help='This field cannot be blank', required=required)
     parser.add_argument('comment', required=False)
-    appointment_data = parser.parse_args()
-    for arg in parser.args:
-        parser.remove_argument(arg)
-    return appointment_data
+    return parser.parse_args()
 
 
 api.add_resource(AppointmentsAll, '/api/appointments', methods=['GET', 'POST'])
