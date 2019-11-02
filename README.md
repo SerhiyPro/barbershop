@@ -1,5 +1,5 @@
 # barbershop
- Website for barbershop, built with flask, vue.js and docker. 
+ Website for the barbershop, built with flask, vue.js and docker. 
 
 ## Prerequisites
 Ensure you've got docker and docker-compose installed.
