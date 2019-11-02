@@ -121,7 +121,8 @@ class TokenRefresh(Resource):
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
-        return {'access_token': access_token}, 200
+        refresh_token = create_refresh_token(identity=current_user)
+        return {'access_token': access_token, 'refresh_token': refresh_token}, 200
 
 
 class AllUsers(Resource):
