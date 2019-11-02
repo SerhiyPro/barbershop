@@ -1,3 +1,6 @@
+from datetime import datetime
+from itertools import groupby
+
 from server import db
 
 
@@ -27,8 +30,8 @@ class Appointments(db.Model):
             'clients_phone_number': self.clients_phone_number,
             'service': str(self.service),
             'barber': str(self.barber),
-            'procedure_start_datetime': str(self.procedure_start_datetime),
-            'procedure_end_datetime': str(self.procedure_end_datetime),
+            'procedure_start_datetime': str(self.procedure_start_datetime.strftime("%Y-%m-%d %H:%M")),
+            'procedure_end_datetime': str(self.procedure_end_datetime.strftime("%Y-%m-%d %H:%M")),
             'comment': str(self.comment)
         }
 
@@ -45,5 +48,23 @@ class Appointments(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def return_all(cls):
+    def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_users_appointments(cls, user_id):
+        user_appointments = cls.query.filter_by(barber=user_id).filter(cls.procedure_start_datetime >= datetime.now()) \
+            .order_by(cls.procedure_start_datetime)
+
+        appointments = {}
+        for day, appointments_time in groupby(user_appointments,
+                                              lambda app: app.procedure_start_datetime.date().strftime("%Y-%m-%d")):
+            if day not in appointments:
+                appointments[day] = []
+            for appointment_time in appointments_time:
+                appointments[day].append(
+                    {
+                        'procedure_start_datetime': appointment_time.procedure_start_datetime.strftime("%Y-%m-%d %H:%M"),
+                        'procedure_end_datetime': appointment_time.procedure_end_datetime.strftime("%Y-%m-%d %H:%M"),
+                    })
+        return appointments
