@@ -9,7 +9,7 @@ class CommentsAll(Resource):
         return {'comments': list(map(lambda x: x.get_self_representation(), Comments.get_all()))}, 200
 
     def post(self):
-        data = get_creation_parser_data(required=True)
+        data = get_parser_data(check=True)
         new_comment = Comments(
             commentators_name=data['commentators_name'],
             value=data['value'],
@@ -33,7 +33,7 @@ class Comment(Resource):
 
     @jwt_required
     def put(self, id):
-        data = get_creation_parser_data(required=False)
+        data = get_parser_data(check=False)
         comment = Comments.get_by_id(id)
         if not comment:
             return {'message': f'Comment with id {id} does not exist'}, 400
@@ -60,11 +60,11 @@ class Comment(Resource):
         return {}, 202
 
 
-def get_creation_parser_data(required=False):
+def get_parser_data(check=False):
     parser = reqparse.RequestParser()
-    parser.add_argument('commentators_name', required=required)
-    parser.add_argument('value', help='This field cannot be blank', required=required)
-    parser.add_argument('rate', type=int, help='This field cannot be blank and should be integer', required=required)
+    parser.add_argument('commentators_name', required=check)
+    parser.add_argument('value', help='This field cannot be blank', required=check)
+    parser.add_argument('rate', type=int, help='This field cannot be blank and should be integer', required=check)
     parser.add_argument('is_checked', required=False)
     return parser.parse_args()
 

@@ -10,7 +10,7 @@ class AppointmentsAll(Resource):
         return {'appointments': list(map(lambda x: x.get_self_representation(), Appointments.get_all()))}, 200
 
     def post(self):
-        data = get_parser_info(required=True)
+        data = get_parser_data(check=True)
         try:
             procedure_start_datetime = datetime.strptime(data['procedure_start_datetime'], '%Y-%m-%d %H:%M')
             procedure_end_datetime = datetime.strptime(data['procedure_end_datetime'], '%Y-%m-%d %H:%M')
@@ -98,14 +98,14 @@ def get_datetime_range(start=None, end=None):
     return minutes
 
 
-def get_parser_info(required=False):
+def get_parser_data(check=False):
     parser = reqparse.RequestParser()  # Adding request parses
-    parser.add_argument('clients_name', help='This field cannot be blank', required=required)
-    parser.add_argument('clients_phone_number', help='This field cannot be blank', required=required)
-    parser.add_argument('service', type=int, help='This field cannot be blank and should be integer', required=required)
-    parser.add_argument('barber', type=int, help='This field cannot be blank and should be integer', required=required)
-    parser.add_argument('procedure_start_datetime', help='This field cannot be blank', required=required)
-    parser.add_argument('procedure_end_datetime', help='This field cannot be blank', required=required)
+    parser.add_argument('clients_name', help='This field cannot be blank', required=check)
+    parser.add_argument('clients_phone_number', help='This field cannot be blank', required=check)
+    parser.add_argument('service', type=int, help='This field cannot be blank and should be integer', required=check)
+    parser.add_argument('barber', type=int, help='This field cannot be blank and should be integer', required=check)
+    parser.add_argument('procedure_start_datetime', help='This field cannot be blank', required=check)
+    parser.add_argument('procedure_end_datetime', help='This field cannot be blank', required=check)
     parser.add_argument('comment', required=False)
     return parser.parse_args()
 

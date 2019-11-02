@@ -3,9 +3,6 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from server.models import Services
 
-parser = reqparse.RequestParser()
-parser.add_argument('name', help='This field cannot be blank', required=True)
-
 
 class ServicesAll(Resource):
     def get(self):
@@ -13,7 +10,7 @@ class ServicesAll(Resource):
 
     @jwt_required
     def post(self):
-        data = parser.parse_args()
+        data = get_parser_data(check=True)
 
         if Services.get_by_name_or_id(name=data['name']):
             return {'message': f'Service {data["name"]} already exists'}, 400
@@ -40,7 +37,7 @@ class Service(Resource):
 
     @jwt_required
     def put(self, id):
-        data = parser.parse_args()
+        data = get_parser_data(check=True)
         service = Services.get_by_name_or_id(id=id)
         if not service:
             return {'message': f'Service with id {id} does not exist'}, 400
@@ -64,6 +61,12 @@ class Service(Resource):
 
         service.delete_from_db()
         return {}, 202
+
+
+def get_parser_data(check=False):
+    parser = reqparse.RequestParser()
+    parser.add_argument('name', help='This field cannot be blank', required=check)
+    return parser.parse_args()
 
 
 api.add_resource(ServicesAll, '/api/services', methods=['GET', 'POST'])
