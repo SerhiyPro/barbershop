@@ -1,13 +1,33 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+
+<Header></Header>
+
+
+<router-view>
+</router-view>
+
+<Footer></Footer>
+
+<Modal></Modal>
   </div>
+
 </template>
 
 <script>
+
+// import Home from "@/components/Home";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 export default {
-  name: 'App'
+  name: 'app',
+  components: {
+    // Home,
+    Header,
+    Footer
+
+  },
+
 }
 </script>
 

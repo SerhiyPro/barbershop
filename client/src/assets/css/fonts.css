@@ -1,0 +1,41 @@
+/* Proxima Nova */
+
+/* Proxima Nova Light */
+
+@font-face {
+  font-family: 'Proxima Nova Light';
+  src: url('../fonts/Proxima Nova/Proxima Nova Light/ProximaNova-Light.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Proxima Nova/Proxima Nova Light/ProximaNova-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Proxima Nova/Proxima Nova Light/ProximaNova-Light.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/Proxima Nova/Proxima Nova Light/ProximaNova-Light.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+/* Proxima Nova Regular */
+
+@font-face {
+  font-family: 'Proxima Nova Regular';
+  src: url('../fonts/Proxima Nova/Proxima Nova Regular/ProximaNova-Regular.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Proxima Nova/Proxima Nova Regular/ProximaNova-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Proxima Nova/Proxima Nova Regular/ProximaNova-Regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/Proxima Nova/Proxima Nova Regular/ProximaNova-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+/* Proxima Nova Semibold */
+
+@font-face {
+  font-family: 'Proxima Nova Semibold';
+  src: url('../fonts/Proxima Nova/Proxima Nova Semibold/ProximaNova-Semibold.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Proxima Nova/Proxima Nova Semibold/ProximaNova-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Proxima Nova/Proxima Nova Semibold/ProximaNova-Semibold.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/Proxima Nova/Proxima Nova Semibold/ProximaNova-Semibold.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+/* Proxima Nova Bold */
+
+@font-face {
+  font-family: 'Proxima Nova Bold';
+  src: url('../fonts/Proxima Nova/Proxima Nova Bold/ProximaNova-Bold.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Proxima Nova/Proxima Nova Bold/ProximaNova-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Proxima Nova/Proxima Nova Bold/ProximaNova-Bold.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/Proxima Nova/Proxima Nova Bold/ProximaNova-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+}

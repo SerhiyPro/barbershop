@@ -1,0 +1,174 @@
+.vanilla-calendar *,
+.vanilla-calendar :before,
+.vanilla-calendar :after {
+  box-sizing: border-box;
+}
+
+.vanilla-calendar {
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #e7e9ed;
+  box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.05);
+  margin: 0 auto;
+  overflow: hidden;
+  width: 350px;
+}
+
+@media(max-width: 1200px) {
+  .vanilla-calendar {
+  width: auto;
+}
+
+}.vanilla-calendar .vanilla-calendar-btn {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-appearance: button;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: normal;
+  min-width: 27px;
+  outline: 0;
+  overflow: visible;
+  padding: 0;
+  text-align: center;
+}
+
+.vanilla-calendar .vanilla-calendar-btn:active {
+  border-radius: 5px;
+  box-shadow: 0 0 0 2px rgba(#e7e9ed, 0.1);
+}
+
+.vanilla-calendar .vanilla-calendar-header {
+  align-items: center;
+  display: flex;
+  font-size: 30px;
+  text-transform: none;
+  padding: 40px 10px 100px;
+}
+
+.vanilla-calendar .vanilla-calendar-header svg {
+  fill: #333;
+}
+
+.vanilla-calendar .vanilla-calendar-header__label {
+  display: flex;
+  padding-left: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  letter-spacing: .4em;
+  font-family: "Proxima Nova Regular", sans-serif;
+}
+
+.vanilla-calendar .vanilla-calendar-week {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 30px;
+}
+
+.vanilla-calendar .vanilla-calendar-week:before {
+  background: url(../img/calendar.png) no-repeat center top / 100% 100%;
+  position: absolute;
+  width: 100%;
+  top: -100%;
+  left: 0;
+  height: 100%;
+  content: "";
+  display: block;
+}
+
+.vanilla-calendar .vanilla-calendar-week {
+  position: relative;
+  background: #0a1e29;
+  z-index: 0;
+}
+
+.vanilla-calendar .vanilla-calendar-week span {
+  color: #fff;
+  flex-direction: column;
+  flex: 0 0 14.28%;
+  font-size: 1em;
+  font-weight: 700;
+  max-width: 14.28%;
+  padding: 15px 0;
+  text-align: center;
+  z-index: 100;
+  font-family: "Proxima Nova Bold", sans-serif;
+}
+
+.vanilla-calendar .vanilla-calendar-body {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 30px 0;
+  background: #0a1e29;
+}
+
+.vanilla-calendar .vanilla-calendar-date {
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 14.28%;
+  max-width: 14.28%;
+  padding: 3px 0;
+  color: #fff;
+}
+
+.vanilla-calendar .vanilla-calendar-date--active {
+  cursor: pointer;
+}
+
+.vanilla-calendar .vanilla-calendar-date--today,
+.vanilla-calendar .vanilla-calendar-date--selected {
+  position: relative;
+}
+
+.vanilla-calendar .vanilla-calendar-date--disabled {
+  border-radius: 0;
+  cursor: not-allowed;
+  opacity: .2;
+}
+
+[data-calendar-date*="Sun"] span {
+  color: #ff3434;
+}
+
+.vanilla-calendar-date--today:before {
+  border-radius: 50% 50%;
+  height: 30px;
+  content: "";
+  width: 30px;
+  position: absolute;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  background: #fa2d49;
+}
+
+.vanilla-calendar-date--active span {
+  color: #fff;
+  position: relative;
+  z-index: 0;
+}
+
+.vanilla-calendar-date--selected:before {
+  border: 2px solid #fa2d49;
+  border-radius: 50% 50%;
+  height: 30px;
+  content: "";
+  width: 30px;
+  position: absolute;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+}
+
+.vanilla-calendar .vanilla-calendar-date {
+  font-family: "Proxima Nova Bold", sans-serif;
+}
+
+.vanilla-calendar-body-wrapper {
+  min-height: 220px;
+  background-color: #0a1e29;
+}
